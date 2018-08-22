@@ -84,3 +84,6 @@ Route::get('/cart/fake', 'CartController@fake');
 Route::get('/email', function(){
 	return view('email.register_verify');
 });
+Route::get('/vue', function(){
+	return view('vue');
+});
