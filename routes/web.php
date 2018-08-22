@@ -78,6 +78,8 @@ Route::get('/cart/remove/{id}', 'CartController@remove_from_cart')->name('cart.r
 Route::get('/cart/pay', 'CartController@send_to_ecpay')->name('cart.pay');
 Route::post('/cart/receive/{order_no}', 'CartController@ecpay_receive')->name('cart.receive');
 Route::get('/cart_list', 'CartController@showList')->name('cart.list');
+Route::get('/cart_detail/{id}', 'CartController@showDetail')->name('cart.detail');
+Route::get('/cart_detail_pdf/{id}', 'CartController@createPDF')->name('cart.detail.pdf');
 
 //------------------------------------------------------------------------------------------------------------
 Route::get('/cart/fake', 'CartController@fake');
@@ -87,3 +89,4 @@ Route::get('/email', function(){
 Route::get('/vue', function(){
 	return view('vue');
 });
+Route::get('/pdf', 'PageController@pdf');

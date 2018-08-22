@@ -52,6 +52,39 @@ class CartController extends Controller
     }
 
     /**
+     * 供已登入的用戶查看選定的訂單明細
+     * 若非訂單所有者則會退回上一頁
+     */
+    public function showDetail(Request $request, $id)
+    {
+        $order = Order::find($id);
+
+        if ( $order->user_id != Auth::id() ) {
+            return redirect()->back();
+        }
+
+        return view('cart.detail', compact('order'));
+    }
+
+    /**
+     * 產出PDF訂單供下載
+     * 若非訂單所有者則會退回上一頁
+     */
+    public function createPDF(Request $request, $id)
+    {
+        $order = Order::find($id);
+
+        if ( $order->user_id != Auth::id() ) {
+            return redirect()->back();
+        }
+
+        $mpdf = new \Mpdf\Mpdf();
+        $mpdf->autoLangToFont = true; 
+        $mpdf->WriteHTML(view('pdf.cart_detail', compact('order'))->render());
+        $mpdf->Output($order->order_no, 'I');
+    }
+
+    /**
      * 清空購物車內的商品
      */
 	public function destroy_all(Request $request)

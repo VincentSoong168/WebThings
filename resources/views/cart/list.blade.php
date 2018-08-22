@@ -62,7 +62,7 @@
 						<td>{{ $order->created_at }}</td>
 						<td>{{ $status_array[$order->status] }}</td>
 						<td>
-							<a href="" class="btn btn-block btn-primary">檢視</a>
+							<a href="{{ route('cart.detail', $order->id) }}" class="btn btn-block btn-primary">檢視</a>
 						</td>
 					</tr>
 				@empty
