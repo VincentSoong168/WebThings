@@ -7,6 +7,7 @@ use App\Articles;
 use App\Product;
 use Session;
 use Image;
+use Excel;
 
 class PageController extends Controller
 {
@@ -35,24 +36,5 @@ class PageController extends Controller
         $product_list = Product::paginate(9);
 
         return view('page.product_list', compact('product_list'));
-    }
-
-    public function pdf(Request $request)
-    {
-        if ( !$request->session()->has('cart') ){
-            Session::flash('fail', '購物車為空');
-
-            return redirect()->route('page.product.list');
-        }
-
-        $cart = Session::get('cart');
-        $product_list = $cart['product_list'];
-        $total_price = $cart['total_price'];
-
-        $mpdf = new \Mpdf\Mpdf();
-        $mpdf->autoLangToFont = true; 
-        $mpdf->WriteHTML(view('order_pdf', compact('product_list', 'total_price'))->render());
-        $mpdf->Output('yourFileName.pdf', 'I');
-        //return view('order_pdf', compact('product_list', 'total_price'));
     }
 }

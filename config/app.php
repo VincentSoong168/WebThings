@@ -185,6 +185,8 @@ return [
         Fedeisas\LaravelMailCssInliner\LaravelMailCssInlinerServiceProvider::class,
         //PDF
         //$mpdf = new \Mpdf\Mpdf()
+        //Excel
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -236,7 +238,8 @@ return [
         
         'Image' => Intervention\Image\Facades\Image::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
-
+        'PDF' => Mpdf\Mpdf::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

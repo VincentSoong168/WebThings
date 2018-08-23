@@ -9,6 +9,8 @@ use Auth;
 use Mail;
 use View;
 use App\Mail\Payment_Confirm;
+use PDF;
+use Excel;
 
 class CartController extends Controller
 {
@@ -78,10 +80,50 @@ class CartController extends Controller
             return redirect()->back();
         }
 
-        $mpdf = new \Mpdf\Mpdf();
+        //$mpdf = new \Mpdf\Mpdf();
+        $mpdf = new PDF();
         $mpdf->autoLangToFont = true; 
         $mpdf->WriteHTML(view('pdf.cart_detail', compact('order'))->render());
         $mpdf->Output($order->order_no, 'I');
+    }
+
+    /**
+     * 產出訂單列表的Excel檔供下載
+     * 若非訂單所有者則會退回上一頁
+     */
+    public function exportExcel(Request $request)
+    {
+        $rules = [
+            'user_id' =>  ['required', 'exists:users,id'],
+        ];
+
+        $this->validate($request, $rules);
+        //-----------------------------------------------------------------驗證區
+
+        $order_list = Order::where('user_id', $request->user_id)->get();
+
+        Excel::create('會員_'.Auth::user()->name.'_訂單一覽', function ($excel) use ($order_list) {
+            $excel->sheet('hello', function ($sheet) use ($order_list) {
+                $row_count = 1;
+                $sheet->appendRow([
+                    '#', 
+                    '訂單編號',
+                    '訂單價格',
+                    '訂單狀態',
+                    '訂單建立時間',
+                ]);
+                foreach ($order_list as $order) {
+                    $sheet->appendRow([
+                        $row_count,
+                        $order->order_no,
+                        $order->price,
+                        $this->status_array[$order->status],
+                        $order->created_at,
+                    ]);
+                    $row_count++;
+                }
+            });
+        })->download('xls');
     }
 
     /**

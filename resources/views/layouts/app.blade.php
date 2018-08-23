@@ -13,6 +13,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/helper.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     @yield('css')
 </head>
@@ -20,7 +21,7 @@
     @yield('facebook_plugin')
     <div id="app">
         <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
+            <div class="container p-t-10 p-b-10">
                 <div class="navbar-header">
 
                     <!-- Collapsed Hamburger -->

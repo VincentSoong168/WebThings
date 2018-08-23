@@ -31,8 +31,15 @@
     
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<div class="col-sm-11">
+			<div class="col-sm-9">
 				<span>訂單一覽</span>
+			</div>
+			<div class="col-sm-3 text-right">
+				<form id="excel_form" method="post" action="{{ route('cart.export.excel') }}" target="_blank">
+					{{ csrf_field() }}
+					<input type="hidden" name="user_id" value="{{ Auth::id() }}">
+					<input type="submit" class="btn btn-success" value="Export Excel">
+				</form>
 			</div>
 		</div>
 

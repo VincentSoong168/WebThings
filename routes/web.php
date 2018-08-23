@@ -80,6 +80,7 @@ Route::post('/cart/receive/{order_no}', 'CartController@ecpay_receive')->name('c
 Route::get('/cart_list', 'CartController@showList')->name('cart.list');
 Route::get('/cart_detail/{id}', 'CartController@showDetail')->name('cart.detail');
 Route::get('/cart_detail_pdf/{id}', 'CartController@createPDF')->name('cart.detail.pdf');
+Route::post('/cart/export_excel', 'CartController@exportExcel')->name('cart.export.excel');
 
 //------------------------------------------------------------------------------------------------------------
 Route::get('/cart/fake', 'CartController@fake');
@@ -89,4 +90,3 @@ Route::get('/email', function(){
 Route::get('/vue', function(){
 	return view('vue');
 });
-Route::get('/pdf', 'PageController@pdf');
