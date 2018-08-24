@@ -48,7 +48,8 @@ class CartController extends Controller
      */
     public function showList(Request $request)
     {
-        $order_list = Order::where('user_id', Auth::id())->orderBy('id', 'DESC')->paginate(10);
+
+        $order_list = (new Order)->get_order_list(Auth::id(), $request->order_status, 10);
 
         return view('cart.list', compact('order_list'));
     }
@@ -94,13 +95,20 @@ class CartController extends Controller
     public function exportExcel(Request $request)
     {
         $rules = [
-            'user_id' =>  ['required', 'exists:users,id'],
+            'user_id'       =>  ['required', 'exists:users,id'],
+            'order_status'  =>  ['integer'],
         ];
 
         $this->validate($request, $rules);
         //-----------------------------------------------------------------驗證區
 
-        $order_list = Order::where('user_id', $request->user_id)->get();
+        $order_list = new Order;
+
+        if (isset($request->order_status) && $request->order_status!=99) {
+            $order_list = $order_list->where('status', $request->order_status);
+        }
+
+        $order_list = $order_list->where('user_id', $request->user_id)->get();
 
         Excel::create('會員_'.Auth::user()->name.'_訂單一覽', function ($excel) use ($order_list) {
             $excel->sheet('hello', function ($sheet) use ($order_list) {

@@ -31,13 +31,25 @@
     
 	<div class="panel panel-primary">
 		<div class="panel-heading">
-			<div class="col-sm-9">
+			<div class="col-sm-8">
 				<span>訂單一覽</span>
 			</div>
-			<div class="col-sm-3 text-right">
+
+			<div class="col-sm-2 text-right">
+				<form  id="condition_form" method="get" action="{{ route('cart.list') }}">
+					<select id="order_status" class="form-control" name="order_status">
+						<option value="99">所有狀態</option>
+						@foreach($status_array as $status_value => $status_name)
+							<option value="{{ $status_value }}" {{ (Request::get('order_status')===(string)$status_value) ? 'selected' : ''  }}>{{ $status_name }}</option>
+						@endforeach
+					</select>
+				</form>
+			</div>
+			<div class="col-sm-2 text-right">
 				<form id="excel_form" method="post" action="{{ route('cart.export.excel') }}" target="_blank">
 					{{ csrf_field() }}
 					<input type="hidden" name="user_id" value="{{ Auth::id() }}">
+					<input type="hidden" name="order_status" value="{{ Request::get('order_status') }}">
 					<input type="submit" class="btn btn-success" value="Export Excel">
 				</form>
 			</div>
@@ -85,4 +97,14 @@
 		</div>
 		@endif
 	</div>
+@endsection
+
+@section('javascript')
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('#order_status').on('change', function(){
+				$("#condition_form").submit();
+			});
+		});
+	</script>
 @endsection
