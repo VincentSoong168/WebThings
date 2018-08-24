@@ -4,7 +4,7 @@
         @if(Auth::guard('web')->user()->image)
             <img class="header_right_img" src="{{ asset('storage/'.Auth::guard('web')->user()->image) }}" width="50" height="50">
         @else
-            <img class="header_right_img" src="{{ asset('storage/user/default.jpeg') }}" width="50" height="50">
+            <img class="header_right_img" src="{{ asset('default/user_profile_pic.jpeg') }}" width="50" height="50">
         @endif
         {{ Auth::guard('web')->user()->name }} <span class="caret"></span>
     </a>
